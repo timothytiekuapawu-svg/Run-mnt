@@ -7,15 +7,23 @@
 <style>
 :root{--accent1:#ffd700;--accent2:#ff8800;--glass: rgba(255,255,255,0.08);}
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#fff;background:#000;overflow-y:auto;}
-.slideshow{position:fixed;inset:0;z-index:-3;overflow:hidden}
-.slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:fadeSlide 32s infinite ease-in-out}
-.slideshow img:nth-child(1){animation-delay:0s}
-.slideshow img:nth-child(2){animation-delay:8s}
-.slideshow img:nth-child(3){animation-delay:16s}
-.slideshow img:nth-child(4){animation-delay:24s}
-@keyframes fadeSlide{0%{opacity:0}8%{opacity:1}25%{opacity:1}33%{opacity:0}100%{opacity:0}}
-.overlay{position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg, #eeeaea, rgb(236, 235, 235));pointer-events:none}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#fff;overflow-y:auto;}
+body {
+  background: url('background.jpg') no-repeat center center fixed; /* <-- your background image */
+  background-size: cover;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* behind content but above background */
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(255, 136, 0, 0.2) 100%
+  );
+  pointer-events: none;
+}
 .page-wrap{max-width:1100px;margin:0 auto;padding:18px;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;}
 .card{background:linear-gradient(180deg, rgba(0,0,0,0.28), rgba(255,255,255,0.02));border-radius:14px;padding:22px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 10px 30px rgba(0,0,0,0.45);}
 header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
@@ -55,12 +63,6 @@ footer{margin-top:18px;text-align:center;color:rgba(255,255,255,0.9)}
 </head>
 <body>
 
-<div class="slideshow" aria-hidden="true">
-  <img src="OIP (1)" alt="">
-  <img src="OIP (2)" alt="">
-  <img src="OIP (3)" alt="">
-  <img src="OIP (4)" alt="">
-</div>
 <div class="overlay" aria-hidden="true"></div>
 
 <main class="page-wrap">
@@ -218,7 +220,7 @@ footer{margin-top:18px;text-align:center;color:rgba(255,255,255,0.9)}
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 try {
-  emailjs.init("ad1dHGUf_gonZ5ERG"); // <-- Replace with your EmailJS public key
+  emailjs.init("ad1dHGUf_gonZ5ERG"); // <-- Your public key
 } catch(e) { console.error("EmailJS init error:", e); }
 
 const step1=document.getElementById('step1');
@@ -281,8 +283,6 @@ document.getElementById('confirmBtn').addEventListener('click', ()=>{
   if(!raw){alert('No booking found');return;}
   const params=JSON.parse(raw);
   document.getElementById('sending').style.display='block';
-
-  // <-- Replace with your EmailJS Service ID and Template ID
   emailjs.send("service_972cf37","template_3epza38", params)
     .then(()=>{
       document.getElementById('sending').style.display='none';
@@ -323,5 +323,3 @@ function resetToHome(){
 </script>
 </body>
 </html>
-
-
